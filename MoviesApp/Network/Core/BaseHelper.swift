@@ -1,5 +1,5 @@
 //
-//  BaseRequest.swift
+//  BaseHelper.swift
 //  MoviesApp
 //
 //  Created by İsmail Palalı on 3.12.2022.
@@ -13,8 +13,8 @@ enum ErrorTypes: String, Error {
     case generalError = "An error happened"
 }
 
-class BaseRequest {
-    static let shared = BaseRequest()
+class BaseHelper {
+    static let shared = BaseHelper()
 
     private let baseURL = "https://api.tkkhemoviedb.org/3/"
     private let apiKey = "5446b5c19e9238c6aac08e1b5a23c57a"
