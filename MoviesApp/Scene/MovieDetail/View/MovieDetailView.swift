@@ -7,6 +7,7 @@
 
 import UIKit
 import Kingfisher
+import FirebaseAnalytics
 
 protocol MoviewDetailViewDelegate: AnyObject {
     func websiteButtonTapped(id: String)
@@ -61,7 +62,7 @@ final class MovieDetailView: UIView {
         imdbButton.setImage(UIImage(named: "imdb"), for: .normal)
         imdbButton.addTarget(self, action: #selector(websiteButtonTapped(_:)), for: UIControl.Event.touchUpInside)
         headerLabel.font = UIFont(name: "SFProText-Semibold", size: 45)
-        headerLabel.textColor = .yellow
+        headerLabel.textColor = .black
         headerLabel.text = "Similar Movies"
 
 
@@ -172,6 +173,11 @@ final class MovieDetailView: UIView {
             .replacingOccurrences(of: "<br />", with: "")
         self.movieDescLabel.text = descriptionText
         self.imdb = movie.imdbID ?? ""
+
+        FirebaseAnalytics.Analytics.logEvent("detail_screen_viewed", parameters: [
+          AnalyticsParameterScreenName: "movies_detail_view",
+          "movie_name": movie.title!
+        ])
     }
 }
 
