@@ -6,23 +6,24 @@
 //
 
 import Foundation
+import Alamofire
 
 protocol MoviesDetailManagerProtocol {
-    func getDetailMovie(id: Int, complete: @escaping((MovieDetailModel?, Error?)->()))
+    func getDetailMovie(movieID: Int, completion: @escaping((MovieDetailModel?, AFError?)->()))
 }
 
 final class MoviesDetailManager: MoviesDetailManagerProtocol {
     static let shared = MoviesDetailManager()
 
-    func getDetailMovie(id: Int, complete: @escaping ((MovieDetailModel?, Error?) -> ())) {
-        BaseNetworkManager.shared.request(type: MovieDetailModel.self,
-                                      url: MovieDetailHelperEndpoint.detail.path + "\(id)",
-                                      method: .get) { response in
-            switch response {
+    func getDetailMovie(movieID: Int, completion: @escaping ((MovieDetailModel?, AFError?) -> ())) {
+        let request = MovieDetailRequest(movieID: movieID.stringValue)
+        BaseNetworkManager.shared.load(request: request, responseType: MovieDetailModel.self) { result in
+            switch result {
             case .success(let data):
-                complete(data, nil)
-            case .failure(let error):
-                complete(nil, error)
+                completion(data,nil)
+                return
+            case .failure(let err):
+                print("err: ", err.localizedDescription)
             }
         }
     }

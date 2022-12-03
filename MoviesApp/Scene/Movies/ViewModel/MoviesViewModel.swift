@@ -10,17 +10,17 @@ import Foundation
 protocol MoviesViewModelOutput: AnyObject {
     func reloadList()
     func showErrorMessage(title:String,message:String)
-    func showMovieDetail(_ movie: MovieResult)
+    func showMovieDetail(_ movie: Movie)
 }
 
 final class MoviesViewModel {
 
-    var datasourceUpcoming: [MovieResult] = []
+    var datasourceUpcoming: [Movie] = []
     weak var output: MoviesViewModelOutput?
-    private let service: MoviesManager
+    private let service: ServiceProtocol
 
     // MARK: - Initialization
-    init(service:  MoviesManager) {
+    init(service:  ServiceProtocol) {
         self.service = service
     }
 }
@@ -28,17 +28,18 @@ final class MoviesViewModel {
 // MARK: Events
 extension MoviesViewModel {
     func getUpcomingList() {
-        service.getCategoryMovies(type: .upcoming) { [weak self] response, error in
+
+        service.fetchUpcomingMovies { [weak self] response in
             guard let response = response else {
-                self?.output?.showErrorMessage(title: "Error", message: error?.localizedDescription ?? "")
+                self?.output?.showErrorMessage(title: "Error", message: ErrorTypes.generalError.rawValue)
                 return}
-            self?.datasourceUpcoming = response.results ?? []
+            self?.datasourceUpcoming = response ?? []
             print(response)
             DispatchQueue.main.async {
                 self?.output?.reloadList()
             }
         }
-    }
+        }
 
     /// Select an item with IndexPath
     /// - Parameter indexPath: IndexPath of selected item

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Alamofire
 
 enum ErrorTypes: String, Error {
     case invalidData = "Invalid data"
@@ -14,18 +15,13 @@ enum ErrorTypes: String, Error {
 }
 
 class BaseHelper {
-    static let shared = BaseHelper()
 
-    private let baseURL = "https://api.themoviedb.org/3/"
-    private let apiKey = "5446b5c19e9238c6aac08e1b5a23c57a"
-    private let imageBasePath = "https://image.tmdb.org/t/p/original/"
+    var baseURL: String = NetworkConstans.MovieServiceEndPoint.BASEURL.rawValue
+    var path: String?
+    var method: HTTPMethod = .get
 
-    func requestUrl(url: String) -> String {
-        baseURL + url + "?api_key=\(apiKey)"
-    }
-
-    func getImagePath(url: String) -> String {
-        imageBasePath + url
+    var url: String {
+        baseURL + path.orEmpty
     }
 }
 

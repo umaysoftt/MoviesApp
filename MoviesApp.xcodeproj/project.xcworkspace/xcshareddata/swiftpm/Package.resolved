@@ -9,8 +9,6 @@
           "revision": "78424be314842833c04bc3bef5b72e85fff99204",
           "version": "5.6.4"
         }
-<<<<<<< HEAD
-=======
       },
       {
         "package": "Kingfisher",
@@ -25,11 +23,10 @@
         "package": "SnapKit",
         "repositoryURL": "https://github.com/SnapKit/SnapKit",
         "state": {
-          "branch": "develop",
-          "revision": "58320fe80522414bf3a7e24c88123581dc586752",
-          "version": null
+          "branch": null,
+          "revision": "f222cbdf325885926566172f6f5f06af95473158",
+          "version": "5.6.0"
         }
->>>>>>> featureMovie
       }
     ]
   },

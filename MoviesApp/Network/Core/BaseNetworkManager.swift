@@ -13,29 +13,35 @@ import Alamofire
 class BaseNetworkManager {
     static let shared = BaseNetworkManager()
 
-    func request<T: Codable>(type: T.Type,
-                             url: String,
-                             method: HTTPMethod,
-                             completion: @escaping((Result<T, ErrorTypes>)->())) {
-        AF.request(url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "", method: method).responseData { response in
-            switch response.result {
-            case .success(let data):
-                self.handleResponse(data: data) { response in
-                    completion(response)
+    func load<T: Decodable>(
+        request: BaseHelper,
+        responseType: T.Type,
+        completion: @escaping (Result<T?, ErrorTypes>) -> Void) {
+            AF
+                .request(request.url)
+                .responseDecodable(of: T.self
+                ) { result in
+                    DispatchQueue.main.async {
+                        switch result.result {
+                        case .success(let data):
+                            completion(.success(data))
+                            return
+                        case .failure(let err):
+                            completion(.failure(.generalError))
+                        }
+                    }
                 }
-            case .failure(let _):
-                completion(.failure(.generalError))
-            }
         }
-    }
+}
 
-    fileprivate func handleResponse<T: Codable>(data: Data, completion: @escaping((Result<T, ErrorTypes>)->())) {
-        do {
-            let result = try JSONDecoder().decode(T.self, from: data)
-            completion(.success(result))
-        } catch {
-            completion(.failure(.invalidData))
-        }
+fileprivate func handleResponse<T: Codable>(data: Data, completion: @escaping((Result<T, ErrorTypes>)->())) {
+    do {
+        let result = try JSONDecoder().decode(T.self, from: data)
+        completion(.success(result))
+    } catch {
+        completion(.failure(.invalidData))
+        
     }
 }
+
 

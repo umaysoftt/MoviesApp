@@ -90,13 +90,15 @@ extension MovieTableViewCell {
              make.right.equalTo(-19)
          }
     }
-     func set(_ movies: MovieResult) {
-         var posterImage: String {
-             BaseHelper.shared.getImagePath(url: movies.posterPath ?? "")
+     func set(_ movies: Movie) {
+         guard let posterPath = movies.posterPath else {
+             return
          }
-         var url = URL(string: posterImage)
+         guard let imageUrl = URL(string: "\(NetworkConstans.MovieServiceEndPoint.getImage())\(posterPath)") else {
+             return
+         }
         DispatchQueue.main.async {
-            self.movieImage.kf.setImage(with: url)
+            self.movieImage.kf.setImage(with: imageUrl)
             self.movieTitle.text = "\(String(describing: movies.title ?? "")) (\(DateFormatter.dateFormat(movies.releaseDate, format: "yyyy")))"
             self.movieDescription.text = movies.overview
             self.movieDate.text = DateFormatter.dateFormat(movies.releaseDate, format: "dd.MM.yyyy")
