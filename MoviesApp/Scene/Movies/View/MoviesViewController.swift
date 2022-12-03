@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-final class MoviesViewController: UIViewController, UISearchBarDelegate {
+final class MoviesViewController: UIViewController {
 
     // MARK: - Properties
     private lazy var viewSource: MoviesView = {
@@ -129,5 +129,11 @@ extension MoviesViewController {
         viewSource.scrollView.refreshControl?.addTarget(self, action:
                                                 #selector(handleRefreshControl),
                                              for: .valueChanged)
+    }
+}
+
+extension MoviesViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        self.viewModel.searchMovie(movie: searchText)
     }
 }

@@ -32,6 +32,26 @@ class BaseNetworkManager {
                     }
                 }
         }
+
+    func search<T: Decodable>(
+        request: BaseHelper,
+        responseType: T.Type,
+        completion: @escaping (Result<T?, ErrorTypes>) -> Void) {
+            AF
+                .request(request.urlSearch)
+                .responseDecodable(of: T.self
+                ) { result in
+                    DispatchQueue.main.async {
+                        switch result.result {
+                        case .success(let data):
+                            completion(.success(data))
+                            return
+                        case .failure(let err):
+                            completion(.failure(.generalError))
+                        }
+                    }
+                }
+        }
 }
 
 fileprivate func handleResponse<T: Codable>(data: Data, completion: @escaping((Result<T, ErrorTypes>)->())) {

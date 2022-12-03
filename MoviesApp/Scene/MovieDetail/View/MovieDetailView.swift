@@ -60,8 +60,8 @@ final class MovieDetailView: UIView {
         movieRate.numberOfLines = 0
         imdbButton.setImage(UIImage(named: "imdb"), for: .normal)
         imdbButton.addTarget(self, action: #selector(websiteButtonTapped(_:)), for: UIControl.Event.touchUpInside)
-        headerLabel.font = UIFont(name: "SFProText-Semibold", size: 30)
-        headerLabel.textColor = .systemYellow
+        headerLabel.font = UIFont(name: "SFProText-Semibold", size: 45)
+        headerLabel.textColor = .yellow
         headerLabel.text = "Similar Movies"
 
 

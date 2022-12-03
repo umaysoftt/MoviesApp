@@ -13,10 +13,24 @@ protocol ServiceProtocol {
     func fetchUpcomingMovies(completion: @escaping ([Movie]?) -> Void)
     func fetchMovieDetail(movieID:Int,completion: @escaping (MovieDetailModel?) -> Void)
     func fetchSimilarMovies(movieID:Int,completion: @escaping ([Movie]?) -> Void)
+    func fetchSearchMovies(movie:String,completion: @escaping ([Movie]?) -> Void)
 }
 
 // MARK: - Services
 final class Services: ServiceProtocol {
+    func fetchSearchMovies(movie: String, completion: @escaping ([Movie]?) -> Void) {
+        let request = MovieSearchRequest(movie: movie)
+        BaseNetworkManager.shared.search(request: request, responseType: MoviesResponse.self) { result in
+            switch result {
+            case .success(let data):
+                completion(data?.movies)
+                return
+            case .failure(let err):
+                print("err: ", err.localizedDescription)
+            }
+        }
+    }
+
 
     func fetchSimilarMovies(movieID: Int, completion: @escaping ([Movie]?) -> Void) {
         let request = MovieSimilarRequest(movieID: movieID.stringValue)

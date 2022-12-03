@@ -17,11 +17,15 @@ enum ErrorTypes: String, Error {
 class BaseHelper {
 
     var baseURL: String = NetworkConstans.MovieServiceEndPoint.BASEURL.rawValue
+    var searchBaseURL: String = NetworkConstans.MovieServiceEndPoint.SEARCH.rawValue
     var path: String?
     var method: HTTPMethod = .get
 
     var url: String {
         baseURL + path.orEmpty
+    }
+    var urlSearch: String {
+        searchBaseURL + path.orEmpty
     }
 }
 
