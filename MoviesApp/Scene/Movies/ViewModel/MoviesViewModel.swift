@@ -9,7 +9,8 @@ import Foundation
 
 protocol MoviesViewModelOutput: AnyObject {
     func reloadList()
-    func showProductDetail(_ movie: MovieResult)
+    func showErrorMessage(title:String,message:String)
+    func showMovieDetail(_ movie: MovieResult)
 }
 
 final class MoviesViewModel {
@@ -26,11 +27,11 @@ final class MoviesViewModel {
 
 // MARK: Events
 extension MoviesViewModel {
-
     func getUpcomingList() {
-
         service.getCategoryMovies(type: .upcoming) { [weak self] response, error in
-            guard let response = response else {return}
+            guard let response = response else {
+                self?.output?.showErrorMessage(title: "Error", message: error?.localizedDescription ?? "")
+                return}
             self?.datasourceUpcoming = response.results ?? []
             print(response)
             DispatchQueue.main.async {
@@ -45,7 +46,7 @@ extension MoviesViewModel {
         _ indexPath: IndexPath
     ) {
         let upcoming = datasourceUpcoming[indexPath.row]
-        output?.showProductDetail(upcoming)
+        output?.showMovieDetail(upcoming)
     }
 }
 

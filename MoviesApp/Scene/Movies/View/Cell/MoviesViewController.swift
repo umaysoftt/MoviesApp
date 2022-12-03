@@ -81,7 +81,11 @@ extension MoviesViewController: UITableViewDelegate, UITableViewDataSource {
 
 // MARK: - MoviesViewModelOutput Output
 extension MoviesViewController: MoviesViewModelOutput {
-    func showProductDetail(_ movie: MovieResult) {
+    func showErrorMessage(title: String, message: String) {
+        showAlert(title: title, message: message)
+    }
+
+    func showMovieDetail(_ movie: MovieResult) {
         // TODO IMPLEMENT
     }
 
