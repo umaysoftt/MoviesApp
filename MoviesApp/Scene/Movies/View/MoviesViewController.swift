@@ -34,13 +34,14 @@ final class MoviesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view = viewSource
+        setupDelegates()
         fetchList()
         configureRefreshControl()
-        setupDelegates()
+
     }
 
     private func fetchList() {
-        viewModel.output = self
+
         viewSource.activityIndicator.startAnimating()
         viewModel.getUpcomingList()
         networkCheck()
@@ -55,9 +56,11 @@ final class MoviesViewController: UIViewController {
     }
 
     func setupDelegates() {
+        viewModel.output = self
         viewSource.tableView.delegate = self
         viewSource.tableView.dataSource = self
         viewSource.searchBar.delegate = self
+        navigationItem.title = "Movies"
     }
 }
 
