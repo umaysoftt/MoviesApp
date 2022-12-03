@@ -27,12 +27,11 @@ final class MoviesViewController: UIViewController, UISearchBarDelegate {
         super.init(nibName: nil, bundle: nil)
 
     }
-
-    @available(*, unavailable)
-      public required init?(coder aDecoder: NSCoder) {
-        preconditionFailure("init(coder:) has not been implemented")
-      }
-
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         fetchList()
@@ -46,6 +45,7 @@ final class MoviesViewController: UIViewController, UISearchBarDelegate {
         viewModel.output = self
         activityIndicator.startAnimating()
         viewModel.getUpcomingList()
+        networkCheck()
     }
     @objc func handleRefreshControl() {
        fetchList()
@@ -159,5 +159,24 @@ extension MoviesViewController {
         scrollView.refreshControl?.addTarget(self, action:
                                                 #selector(handleRefreshControl),
                                              for: .valueChanged)
+    }
+
+    private func networkCheck() {
+        if Reachability.isConnectedToNetwork() {
+            print("Network is connected")
+        } else {
+            print("Network is not connected")
+            showAlert(title: "Error", message:" Please connect to internet")
+        }
+    }
+
+    private func showAlert(title: String, message: String) {
+        let controller = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let ok = UIAlertAction(title: "OK", style: .default, handler: nil)
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        controller.addAction(ok)
+        controller.addAction(cancel)
+        present(controller, animated: true, completion: nil)
+        self.activityIndicator.stopAnimating()
     }
 }
