@@ -12,10 +12,26 @@ import Alamofire
 protocol ServiceProtocol {
     func fetchUpcomingMovies(completion: @escaping ([Movie]?) -> Void)
     func fetchMovieDetail(movieID:Int,completion: @escaping (MovieDetailModel?) -> Void)
+    func fetchSimilarMovies(movieID:Int,completion: @escaping ([Movie]?) -> Void)
 }
 
 // MARK: - Services
 final class Services: ServiceProtocol {
+
+    func fetchSimilarMovies(movieID: Int, completion: @escaping ([Movie]?) -> Void) {
+        let request = MovieSimilarRequest(movieID: movieID.stringValue)
+        BaseNetworkManager.shared.load(request: request, responseType: MoviesResponse.self) { result in
+            switch result {
+            case .success(let data):
+                completion(data?.movies)
+                return
+            case .failure(let err):
+                print("err: ", err.localizedDescription)
+            }
+        }
+
+    }
+
     func fetchMovieDetail(movieID: Int, completion: @escaping (MovieDetailModel?) -> Void) {
         let request = MovieDetailRequest(movieID: movieID.stringValue)
         BaseNetworkManager.shared.load(request: request, responseType: MovieDetailModel.self) { result in

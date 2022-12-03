@@ -91,7 +91,7 @@ extension MoviesViewController: MoviesViewModelOutput {
 
     func showMovieDetail(_ movie: Movie) {
         let controller = MovieDetailViewController(movieID: movie.id ?? 0)
-        let viewModel = MoviesDetailViewModel(output: controller, service: MoviesDetailManager())
+        let viewModel = MoviesDetailViewModel(output: controller, service: Services())
         controller.viewModel = viewModel
         navigationController?.pushViewController(
             controller,

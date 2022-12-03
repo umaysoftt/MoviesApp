@@ -22,6 +22,7 @@ final class MovieDetailViewController: UIViewController {
     var viewModel: MoviesDetailViewModel!
 
     private let movieID: Int
+    private var imdb = ""
 
     // MARK: - Initialization
     init(movieID: Int) {
@@ -32,15 +33,29 @@ final class MovieDetailViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view = viewSource
-        viewModel.getProductDetail(movieID)
+
+        setupDelegates()
+        fetchMovie()
         view.backgroundColor = .white
         backButton()
         networkCheck()
     }
+
+    private func setupDelegates() {
+        viewSource.collectionView.delegate = self
+        viewSource.collectionView.dataSource = self
+        self.view = viewSource
+
+
+    }
+
+    private func fetchMovie() {
+        viewModel.getMovieDetail(movieID)
+        viewModel.getSimilarMovies(movieID)
+    }
+
 
     private func backButton() {
         self.navigationController?.navigationBar.topItem?.backButtonTitle = ""
@@ -72,21 +87,42 @@ final class MovieDetailViewController: UIViewController {
     }
 }
 extension MovieDetailViewController: MoviesDetailViewModelOutput {
+
+    func reloadList() {
+        viewSource.collectionView.reloadData()
+    }
+
     func showErrorMessage(title: String, message: String) {
         showAlert(title: "Error", message: message)
     }
 
-    func displayProductDetail(_ movie: MovieDetailModel) {
+    func displayMovieDetail(_ movie: MovieDetailModel) {
         navigationItem.title = "\(String(describing: movie.title ?? "")) (\(DateFormatter.dateFormat(movie.releaseDate, format: "yyyy")))"
         viewSource.populateUI(movie: movie)
     }
 }
 
 extension MovieDetailViewController: MoviewDetailViewDelegate {
-    func websiteButtonTapped(id: Int) {
-
-//        var url = URL(string: imdbTitle)!
-//        let safariViewController = SFSafariViewController(url: url)
-//        present(safariViewController, animated: true)
+    func websiteButtonTapped(id: String) {
+        guard let url = URL(string: "\(NetworkConstans.MovieServiceEndPoint.getIMDB())\(id)") else {
+            return
+        }
+        let safariViewController = SFSafariViewController(url: url)
+        present(safariViewController, animated: true)
     }
+}
+
+extension MovieDetailViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+            return CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
+        }
+        func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+            return viewModel.similarMovies.count
+        }
+
+        func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MoviesCollectionViewCell.Identifier.path.rawValue, for: indexPath) as? MoviesCollectionViewCell
+            cell?.set(viewModel.similarMovies[indexPath.row])
+            return cell ?? UICollectionViewCell()
+        }
 }

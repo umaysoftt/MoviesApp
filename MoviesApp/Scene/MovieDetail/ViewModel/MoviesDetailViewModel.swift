@@ -8,17 +8,19 @@
 import Foundation
 
 protocol MoviesDetailViewModelOutput: AnyObject {
-    func displayProductDetail(_ movie: MovieDetailModel)
+    func displayMovieDetail(_ movie: MovieDetailModel)
     func showErrorMessage(title:String,message:String)
+    func reloadList()
 }
 
 final class MoviesDetailViewModel {
     private weak var output: MoviesDetailViewModelOutput?
-    private let service: MoviesDetailManager
+    private let service: ServiceProtocol
+    var similarMovies: [Movie] = []
 
     // MARK: - Initialization
     init(output: MoviesDetailViewModelOutput,
-         service: MoviesDetailManager) {
+         service: ServiceProtocol) {
         self.output = output
         self.service = service
     }
@@ -26,15 +28,27 @@ final class MoviesDetailViewModel {
 
 // MARK: Events
 extension MoviesDetailViewModel {
-    func getProductDetail(
+    func getMovieDetail(
         _ movieID: Int
     ) {
-        service.getDetailMovie(movieID: movieID) { [weak self] response,error in
+        service.fetchMovieDetail(movieID: movieID) { [weak self] response in
             guard let response = response else {
                 self?.output?.showErrorMessage(title: "Error", message: ErrorTypes.generalError.rawValue)
                 return }
-            self?.output?.displayProductDetail(response)
+            self?.output?.displayMovieDetail(response)
         }
+    }
+
+    func getSimilarMovies(_ movieID: Int) {
+        service.fetchSimilarMovies(movieID: movieID) { [weak self] response in
+            guard let response = response else {
+                self?.output?.showErrorMessage(title: "Error", message: ErrorTypes.generalError.rawValue)
+                return }
+            self?.similarMovies = response
+            self?.output?.reloadList()
+            print(response)
+        }
+
     }
 }
 

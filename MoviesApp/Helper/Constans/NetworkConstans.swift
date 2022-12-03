@@ -12,7 +12,7 @@ class NetworkConstans {
         case LANG = "&language=en-US"
         case UPCOMİNG = "upcoming"
         case IMAGEPATH = "https://image.tmdb.org/t/p/w500"
-        case IMDB = "https://www.imdb.com/title/"
+        case IMDB = "https://m.imdb.com/title/"
 
         static func fetchUpComingMovies() -> String {
             "\(BASEURL.rawValue)\(UPCOMİNG.rawValue)?api_key=\(APIKEY.rawValue)\(LANG.rawValue)"

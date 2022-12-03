@@ -9,7 +9,7 @@ import UIKit
 import Kingfisher
 
 protocol MoviewDetailViewDelegate: AnyObject {
-    func websiteButtonTapped(id: Int)
+    func websiteButtonTapped(id: String)
 }
 
 final class MovieDetailView: UIView {
@@ -25,6 +25,16 @@ final class MovieDetailView: UIView {
     lazy var movieTitleLabel = UILabel()
     lazy var movieDescLabel = UILabel()
     lazy var movieRate = UILabel()
+    lazy var headerLabel = UILabel()
+    lazy var collectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.register(MoviesCollectionViewCell.self, forCellWithReuseIdentifier: MoviesCollectionViewCell.Identifier.path.rawValue)
+        return collectionView
+    }()
+    var imdb = ""
 
     override init(frame: CGRect) {
         super.init(frame: .zero)
@@ -50,6 +60,11 @@ final class MovieDetailView: UIView {
         movieRate.numberOfLines = 0
         imdbButton.setImage(UIImage(named: "imdb"), for: .normal)
         imdbButton.addTarget(self, action: #selector(websiteButtonTapped(_:)), for: UIControl.Event.touchUpInside)
+        headerLabel.font = UIFont(name: "SFProText-Semibold", size: 30)
+        headerLabel.textColor = .systemYellow
+        headerLabel.text = "Similar Movies"
+
+
         scrollView.snp.makeConstraints { (make) in
             make.edges.equalTo(self)
         }
@@ -103,6 +118,18 @@ final class MovieDetailView: UIView {
             make.height.equalTo(19)
             make.width.equalTo(60)
         }
+
+        headerLabel.snp.makeConstraints { make in
+            make.top.equalTo(movieDescLabel.snp.bottom).offset(24)
+            make.left.equalToSuperview().offset(16)
+        }
+        collectionView.snp.makeConstraints { make in
+            make.top.equalTo(headerLabel.snp.bottom).offset(8)
+            make.left.equalToSuperview().offset(16)
+            make.right.equalToSuperview().offset(-16)
+            make.bottom.equalToSuperview().offset(16)
+            make.height.equalToSuperview().multipliedBy(0.25)
+        }
     }
 
     func addViews() {
@@ -115,12 +142,14 @@ final class MovieDetailView: UIView {
         contentView.addSubview(movieTitleLabel)
         contentView.addSubview(movieDescLabel)
         contentView.addSubview(movieRate)
+        contentView.addSubview(collectionView)
+        contentView.addSubview(headerLabel)
         contentView.backgroundColor = .white
         scrollView.backgroundColor = .white
     }
 
     @objc func websiteButtonTapped(_ sender: UIButton) {
-        delegate?.websiteButtonTapped(id: 1)
+        delegate?.websiteButtonTapped(id: self.imdb)
     }
 
     func populateUI(movie: MovieDetailModel) {
@@ -142,6 +171,7 @@ final class MovieDetailView: UIView {
             .replacingOccurrences(of: "<br>", with: "")
             .replacingOccurrences(of: "<br />", with: "")
         self.movieDescLabel.text = descriptionText
+        self.imdb = movie.imdbID ?? ""
     }
 }
 
