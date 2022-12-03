@@ -16,7 +16,7 @@ enum ErrorTypes: String, Error {
 class BaseHelper {
     static let shared = BaseHelper()
 
-    private let baseURL = "https://api.tkkhemoviedb.org/3/"
+    private let baseURL = "https://api.themoviedb.org/3/"
     private let apiKey = "5446b5c19e9238c6aac08e1b5a23c57a"
     private let imageBasePath = "https://image.tmdb.org/t/p/original/"
 
