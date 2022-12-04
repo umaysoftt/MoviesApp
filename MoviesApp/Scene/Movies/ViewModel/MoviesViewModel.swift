@@ -37,8 +37,22 @@ extension MoviesViewModel {
             print(response)
             DispatchQueue.main.async {
                 self?.output?.reloadList()
+                }
             }
         }
+
+    func searchMovie(movie: String) {
+        service.fetchSearchMovies(movie: movie) { [weak self] response in
+            guard let response = response else {
+                self?.output?.showErrorMessage(title: "Error", message: ErrorTypes.generalError.rawValue)
+                return}
+            self?.datasourceUpcoming.removeAll()
+            self?.datasourceUpcoming = response
+            print(response)
+            DispatchQueue.main.async {
+                self?.output?.reloadList()
+                }
+            }
         }
 
     /// Select an item with IndexPath

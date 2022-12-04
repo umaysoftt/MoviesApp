@@ -14,7 +14,16 @@ final class MoviesView: UIView {
     lazy var scrollView = UIScrollView()
     lazy var contentView = UIView()
     lazy var activityIndicator = UIActivityIndicatorView()
-    lazy var searchBar = UISearchBar()
+    lazy var searchBar: UISearchBar = {
+           let searchBar = UISearchBar()
+           searchBar.placeholder = "Search Movies..."
+           searchBar.layer.cornerRadius = 20
+           searchBar.setImage(UIImage(systemName: "magnifyingglass"), for: .search, state: .normal)
+           searchBar.searchBarStyle = UISearchBar.Style.default
+           searchBar.sizeToFit()
+           searchBar.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+           return searchBar
+       }()
 
     override init(frame: CGRect) {
         super.init(frame: .zero)

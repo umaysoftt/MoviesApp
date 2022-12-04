@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-final class MoviesViewController: UIViewController, UISearchBarDelegate {
+final class MoviesViewController: UIViewController {
 
     // MARK: - Properties
     private lazy var viewSource: MoviesView = {
@@ -18,7 +18,6 @@ final class MoviesViewController: UIViewController, UISearchBarDelegate {
     }()
     // MARK: - Properties
     private let viewModel: MoviesViewModel
-    private var currentPage = 0
 
     // MARK: - Initialization
     init(_ viewModel: MoviesViewModel) {
@@ -34,13 +33,14 @@ final class MoviesViewController: UIViewController, UISearchBarDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view = viewSource
+        setupDelegates()
         fetchList()
         configureRefreshControl()
-        setupDelegates()
+
     }
 
     private func fetchList() {
-        viewModel.output = self
+
         viewSource.activityIndicator.startAnimating()
         viewModel.getUpcomingList()
         networkCheck()
@@ -55,9 +55,11 @@ final class MoviesViewController: UIViewController, UISearchBarDelegate {
     }
 
     func setupDelegates() {
+        viewModel.output = self
         viewSource.tableView.delegate = self
         viewSource.tableView.dataSource = self
         viewSource.searchBar.delegate = self
+        navigationItem.title = "Movies"
     }
 }
 
@@ -129,5 +131,11 @@ extension MoviesViewController {
         viewSource.scrollView.refreshControl?.addTarget(self, action:
                                                 #selector(handleRefreshControl),
                                              for: .valueChanged)
+    }
+}
+
+extension MoviesViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        self.viewModel.searchMovie(movie: searchText)
     }
 }
