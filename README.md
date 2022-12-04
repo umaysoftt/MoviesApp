@@ -73,7 +73,11 @@
 
 ## Screenshots
 
-<img src="https://user-images.githubusercontent.com/72145206/201495314-3c0fa477-cc54-4b55-a092-b3581dd58523.png" width="100">
+<img src="https://user-images.githubusercontent.com/72145206/201495314-3c0fa477-cc54-4b55-a092-b3581dd58523.png" width="100"> <img src="https://user-images.githubusercontent.com/119708815/205507431-ecc1b4d7-dbe8-42a6-853d-8e26bdc36d8c.png" width="100"><img src="https://user-images.githubusercontent.com/119708815/205507435-4759b435-9119-4985-add0-84410fe7a547.png" width="100">
+<img src="https://user-images.githubusercontent.com/119708815/205507442-c976214f-3639-4aac-bb51-ab06e7f8e0d9.png" width="100">
+<img src="https://user-images.githubusercontent.com/119708815/205507447-5c24f8d9-0547-4521-a0d8-d21fe6360451.png" width="100">
+<img src="https://user-images.githubusercontent.com/119708815/205507462-5e48c7ef-3f1a-4066-860e-c96525b82ef0.png" width="100">
+<img src="https://user-images.githubusercontent.com/119708815/205507457-2321d526-089f-4a80-a91c-9f2603d2fab5.png" width="400">
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 Project Link:
