@@ -30,7 +30,6 @@
       </ul>
     </li>
     <li><a href="#screenshots">Screenshots</a></li>
-    <li><a href="#contact">Contact</a></li>
   </ol>
 </details>
 
