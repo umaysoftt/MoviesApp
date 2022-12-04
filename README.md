@@ -46,8 +46,7 @@
 * [Snapkit](https://github.com/SnapKit/SnapKit)
 * [KingFisher](https://github.com/onevcat/Kingfisher)
 * [Alomafire](https://github.com/Alamofire/Alamofire)
-* [Lottie](https://lottiefiles.com/)
-* [Swiflint](https://github.com/realm/SwiftLint)
+
 
 
 
