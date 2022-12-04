@@ -61,7 +61,7 @@ final class MovieDetailView: UIView {
         movieRate.numberOfLines = 0
         imdbButton.setImage(UIImage(named: "imdb"), for: .normal)
         imdbButton.addTarget(self, action: #selector(websiteButtonTapped(_:)), for: UIControl.Event.touchUpInside)
-        headerLabel.font = UIFont(name: "SFProText-Semibold", size: 45)
+        headerLabel.font = UIFont(name: "SFProText-Semibold", size: 30)
         headerLabel.textColor = .black
         headerLabel.text = "Similar Movies"
 
@@ -78,9 +78,9 @@ final class MovieDetailView: UIView {
         }
 
         movieImageView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(8)
-            make.left.right.equalTo(0)
-            make.height.equalTo(256)
+            make.top.equalToSuperview()
+            make.left.right.equalToSuperview()
+            make.height.equalToSuperview().multipliedBy(0.25)
         }
 
         imdbButton.snp.makeConstraints { make in
@@ -100,17 +100,20 @@ final class MovieDetailView: UIView {
         movieDate.snp.makeConstraints { make in
             make.top.equalTo(movieImageView.snp.bottom).offset(19)
             make.left.equalTo(movieRate.snp.right).offset(16)
+            make.height.equalTo(16)
         }
 
         movieTitleLabel.snp.makeConstraints { make in
-            make.top.equalTo(movieImageView.snp.bottom).offset(56)
+            make.top.equalTo(movieImageView.snp.bottom).offset(48)
             make.left.equalToSuperview().offset(16)
+            make.height.equalTo(16)
         }
 
         movieDescLabel.snp.makeConstraints { make in
-            make.top.equalTo(movieTitleLabel.snp.bottom).offset(16)
+            make.top.equalTo(movieTitleLabel.snp.bottom).offset(8)
             make.left.equalToSuperview().offset(16)
             make.right.equalToSuperview().offset(-16)
+            make.height.equalTo(16)
         }
 
         movieRate.snp.makeConstraints { make in
@@ -121,11 +124,11 @@ final class MovieDetailView: UIView {
         }
 
         headerLabel.snp.makeConstraints { make in
-            make.top.equalTo(movieDescLabel.snp.bottom).offset(24)
+            make.top.equalTo(movieDescLabel.snp.bottom).offset(16)
             make.left.equalToSuperview().offset(16)
         }
         collectionView.snp.makeConstraints { make in
-            make.top.equalTo(headerLabel.snp.bottom).offset(8)
+            make.top.equalTo(headerLabel.snp.bottom).offset(16)
             make.left.equalToSuperview().offset(16)
             make.right.equalToSuperview().offset(-16)
             make.bottom.equalToSuperview().offset(16)

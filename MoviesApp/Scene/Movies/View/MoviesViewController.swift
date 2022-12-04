@@ -18,7 +18,6 @@ final class MoviesViewController: UIViewController {
     }()
     // MARK: - Properties
     private let viewModel: MoviesViewModel
-    private var currentPage = 0
 
     // MARK: - Initialization
     init(_ viewModel: MoviesViewModel) {
