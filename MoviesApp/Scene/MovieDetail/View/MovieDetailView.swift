@@ -26,7 +26,6 @@ final class MovieDetailView: UIView {
     lazy var movieTitleLabel = UILabel()
     lazy var movieDescLabel = UILabel()
     lazy var movieRate = UILabel()
-    lazy var headerLabel = UILabel()
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -61,9 +60,11 @@ final class MovieDetailView: UIView {
         movieRate.numberOfLines = 0
         imdbButton.setImage(UIImage(named: "imdb"), for: .normal)
         imdbButton.addTarget(self, action: #selector(websiteButtonTapped(_:)), for: UIControl.Event.touchUpInside)
-        headerLabel.font = UIFont(name: "SFProText-Semibold", size: 30)
-        headerLabel.textColor = .black
-        headerLabel.text = "Similar Movies"
+
+        movieImageView.translatesAutoresizingMaskIntoConstraints = false
+        movieImageView.contentMode = .scaleToFill
+        movieImageView.clipsToBounds = true
+        movieImageView.layer.cornerRadius = 10
 
 
         scrollView.snp.makeConstraints { (make) in
@@ -78,9 +79,10 @@ final class MovieDetailView: UIView {
         }
 
         movieImageView.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.left.right.equalToSuperview()
-            make.height.equalToSuperview().multipliedBy(0.25)
+            make.top.equalToSuperview().offset(16)
+            make.left.equalToSuperview().offset(16)
+            make.right.equalToSuperview().offset(-16)
+            make.height.equalToSuperview().multipliedBy(0.35)
         }
 
         imdbButton.snp.makeConstraints { make in
@@ -104,7 +106,7 @@ final class MovieDetailView: UIView {
         }
 
         movieTitleLabel.snp.makeConstraints { make in
-            make.top.equalTo(movieImageView.snp.bottom).offset(48)
+            make.top.equalTo(movieDate.snp.bottom).offset(48)
             make.left.equalToSuperview().offset(16)
             make.height.equalTo(16)
         }
@@ -113,7 +115,6 @@ final class MovieDetailView: UIView {
             make.top.equalTo(movieTitleLabel.snp.bottom).offset(8)
             make.left.equalToSuperview().offset(16)
             make.right.equalToSuperview().offset(-16)
-            make.height.equalTo(16)
         }
 
         movieRate.snp.makeConstraints { make in
@@ -122,17 +123,12 @@ final class MovieDetailView: UIView {
             make.height.equalTo(19)
             make.width.equalTo(60)
         }
-
-        headerLabel.snp.makeConstraints { make in
+        collectionView.snp.makeConstraints { make in
             make.top.equalTo(movieDescLabel.snp.bottom).offset(16)
             make.left.equalToSuperview().offset(16)
-        }
-        collectionView.snp.makeConstraints { make in
-            make.top.equalTo(headerLabel.snp.bottom).offset(16)
-            make.left.equalToSuperview().offset(16)
             make.right.equalToSuperview().offset(-16)
-            make.bottom.equalToSuperview().offset(16)
             make.height.equalToSuperview().multipliedBy(0.25)
+            make.bottom.equalToSuperview().offset(-16)
         }
     }
 
@@ -147,7 +143,6 @@ final class MovieDetailView: UIView {
         contentView.addSubview(movieDescLabel)
         contentView.addSubview(movieRate)
         contentView.addSubview(collectionView)
-        contentView.addSubview(headerLabel)
         contentView.backgroundColor = .white
         scrollView.backgroundColor = .white
     }
